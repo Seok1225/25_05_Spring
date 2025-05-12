@@ -69,7 +69,7 @@ public class ArticleService {
 
 		ResultData userCanModifyRd = userCanModify(loginedMemberId, article);
 		article.setUserCanModify(userCanModifyRd.isSuccess());
-
+		
 		ResultData userDeleteRd = userCanDelete(loginedMemberId, article);
 		article.setUserCanDelete(userDeleteRd.isSuccess());
 	}
