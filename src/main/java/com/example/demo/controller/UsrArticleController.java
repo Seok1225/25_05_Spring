@@ -119,6 +119,19 @@ public class UsrArticleController {
 		return "usr/article/detail";
 	}
 
+	@RequestMapping("/usr/article/doIncreaseHitCountRd")
+	@ResponseBody
+	public ResultData doIncreaseHitCount(int id) {
+
+		ResultData increaseHitCountRd = articleService.increaseHitCount(id);
+
+		if (increaseHitCountRd.isFail()) {
+			return increaseHitCountRd;
+		}
+
+		return ResultData.newData(increaseHitCountRd, "hitCount", articleService.getArticleHitCount(id));
+	}
+
 	@RequestMapping("/usr/article/write")
 	public String showWrite(HttpServletRequest req) {
 
@@ -175,10 +188,13 @@ public class UsrArticleController {
 
 		int pagesCount = (int) Math.ceil(articlesCount / (double) itemsInAPage);
 
-		List<Article> articles = articleService.getForPrintArticles(boardId, itemsInAPage, page);
+		List<Article> articles = articleService.getForPrintArticles(boardId, itemsInAPage, page, searchKeywordTypeCode,
+				searchKeyword);
 
 		model.addAttribute("pagesCount", pagesCount);
 		model.addAttribute("articlesCount", articlesCount);
+		model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+		model.addAttribute("searchKeyword", searchKeyword);
 		model.addAttribute("articles", articles);
 		model.addAttribute("boardId", boardId);
 		model.addAttribute("board", board);
